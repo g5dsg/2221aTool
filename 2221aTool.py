@@ -50,6 +50,7 @@ def dump_flash(filename):
         raise ValueError("bad response to flash read command")
     dev.reset()
 
+
 @cli.command()
 @click.argument("filename", type=click.Path(exists=True))
 def restore_flash(filename):
@@ -62,6 +63,7 @@ def restore_flash(filename):
     ## to-do - check response
     click.secho("done")
     dev.reset()
+
 
 @cli.command()
 @click.argument("state", type=click.Choice(["0", "1"]))
@@ -93,13 +95,14 @@ def set_serial(serial):
     """Sets the device serial number.
     Any unicode string of <=30 chars
     """
-    if len(serial)>30:
+    if len(serial) > 30:
         raise ValueError
 
-    serialBytes = serial.encode('utf-16-le')
-    serialLen = len(serialBytes)+2
-    hid.endpoints()[1].write(cmds.setSerial+bytes([serialLen,0x03])+serialBytes)
+    serialBytes = serial.encode("utf-16-le")
+    serialLen = len(serialBytes) + 2
+    hid.endpoints()[1].write(cmds.setSerial + bytes([serialLen, 0x03]) + serialBytes)
     click.secho("done, please disconnect/reconnect the device to see changes")
+
 
 if __name__ == "__main__":
     cli()
