@@ -8,6 +8,9 @@ This chip is found in many projects including the NinoTNC.
 `2221aTool enum-serial 1`
 Enables enumeration of the device serial number, this makes it possible for udev to identify the TNC uniquely when multiple devices are attached to the same computer. 0 disables enumeration
 
+`2221aTool set-serial 0123456789`
+Set a new serial number. Must disconnect/reconnect after this command.
+
 `2221aTool dump-flash <file>`
 Dumps the current flash config to <file>. This is useful if you break it.
 
