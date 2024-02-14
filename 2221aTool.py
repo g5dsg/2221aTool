@@ -54,6 +54,7 @@ def dump_flash(filename):
 @cli.command()
 @click.argument("filename", type=click.Path(exists=True))
 def restore_flash(filename):
+    """Upload save flash config file to device."""
     with open(filename, "rb") as f:
         config = f.read()
         f.close()
@@ -101,6 +102,20 @@ def set_serial(serial):
     serialBytes = serial.encode("utf-16-le")
     serialLen = len(serialBytes) + 2
     hid.endpoints()[1].write(cmds.setSerial + bytes([serialLen, 0x03]) + serialBytes)
+    click.secho("done, please disconnect/reconnect the device to see changes")
+
+@cli.command()
+@click.argument("desc")
+def set_description(desc):
+    """Sets the device description.
+    Any unicode string of <=30 chars
+    """
+    if len(desc) > 30:
+        raise ValueError
+
+    descBytes = desc.encode("utf-16-le")
+    descLen = len(descBytes) + 2
+    hid.endpoints()[1].write(cmds.setDescription + bytes([descLen, 0x03]) + descBytes)
     click.secho("done, please disconnect/reconnect the device to see changes")
 
 
