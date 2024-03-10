@@ -1,5 +1,6 @@
 import click
 import code
+import re
 import sys
 import usb.core
 import lib.commands as cmds
@@ -118,6 +119,30 @@ def set_description(desc):
     hid.endpoints()[1].write(cmds.setDescription + bytes([descLen, 0x03]) + descBytes)
     click.secho("done, please disconnect/reconnect the device to see changes")
 
+
+@cli.command()
+@click.argument("state")
+def setup_gpio(state):
+    """Write flash config to set all GPIO pins to output / low at startup"""
+    hid.endpoints()[1].write(cmds.setupGPIO)
+    response = hid.endpoints()[0].read(64)
+    click.secho("ok")
+@cli.command()
+@click.argument("state")
+def set_gpio(state):
+    """Set GPIO state"""
+    if not re.match(r"^[01][01][01][01]$", state):
+        raise ValueError
+    cmd = cmds.setGPIO
+    for b in state:
+        if b == "1":
+            cmd=cmd+bytes([0x01,0x01,0x00,0x00])
+        else:
+            cmd=cmd+bytes([0x01,0x00,0x00,0x00])
+
+    hid.endpoints()[1].write(cmd)
+    response = hid.endpoints()[0].read(64)
+    print(response)
 
 if __name__ == "__main__":
     cli()
