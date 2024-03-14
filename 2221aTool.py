@@ -121,8 +121,7 @@ def set_description(desc):
 
 
 @cli.command()
-@click.argument("state")
-def setup_gpio(state):
+def setup_gpio():
     """Write flash config to set all GPIO pins to output / low at startup"""
     hid.endpoints()[1].write(cmds.setupGPIO)
     response = hid.endpoints()[0].read(64)
