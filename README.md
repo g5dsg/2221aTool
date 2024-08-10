@@ -36,8 +36,8 @@ Restores flash settings from *file*
 A default flash config is included in `data/`.
 
 `2221aTool setup-gpio`
-Configures the 4 GPIO pins on the MCP2221a as GPIO outputs. This command modifies the flask configuration (ie it is 
-permanent) will be set to start low at power on.
+Configures the GPIO pins as outputs. This command modifies the flash configuration - ie it is 
+permanent. The pins will all be set low immediately and at power-on (to-do: make this state configurable).
 
 `2221aTool set-gpio 1001`
 Sets the GPIO pins to 1001. GPIO output must have been previously enabled using the above command. This command does 
